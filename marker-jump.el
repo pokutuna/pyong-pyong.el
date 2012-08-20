@@ -1,7 +1,6 @@
 ;;; marker-jump.el
 ;;
 
-
 (defvar mkj:marker-stack ())
 (defvar mkj:marker-alist ())
 (defvar mkj:max-buffer-name-length 0)
@@ -11,7 +10,7 @@
 (defvar mkj:buffer-name-face font-lock-constant-face)
 (defvar mkj:line-number-face font-lock-comment-delimiter-face)
 
-(defvar mkj:candidate-number-limit 5)
+(defvar mkj:candidate-number-limit 30)
 
 (defun mkj:push-point-marker ()
   ""
@@ -60,7 +59,7 @@
 (defvar anything-c-source-mkj
   '((name . "MarkerJump")
     (candidates . mkj:marker-alist)
-    (candidate-number-limit . mkj:candidate-number-limit)
+    (cons candidate-number-limit mkj:candidate-number-limit)
     (candidate-transformer . anything-c-mkj-candidate-transformer)
     (action ("Jump to" . mkj:goto-marker))
     ))
