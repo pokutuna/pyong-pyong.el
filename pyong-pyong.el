@@ -10,8 +10,8 @@
 (defvar pyong:max-line-number-length 0)
 
 (defvar pyong:marker-star-face 'anything-M-x-key-face)
-(defvar pyong:buffer-name-face font-lock-constant-face)
-(defvar pyong:line-number-face font-lock-comment-delimiter-face)
+(defvar pyong:buffer-name-face 'font-lock-constant-face)
+(defvar pyong:line-number-face 'font-lock-comment-delimiter-face)
 
 (defvar pyong:candidate-number-limit 30)
 
