@@ -123,4 +123,4 @@
             (propertize (nth 1 l) 'face pyong:line-number-face)
             (nth 2 l))))
 
-(provide 'marker-jump)
+(provide 'pyong-pyong)
