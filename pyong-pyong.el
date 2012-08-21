@@ -74,7 +74,7 @@
       (save-excursion
         (letf ((pos (marker-position marker)) (line))
           (goto-char pos)
-          (setf line (thing-at-point 'line))
+          (setf line (or (thing-at-point 'line) " "))
           (when (stringp line)
                (setf line (replace-regexp-in-string "\n" " " line))
                (setf line (pyong:put-star-in-string line (- pos (point-at-bol))))
