@@ -76,13 +76,13 @@
           (goto-char pos)
           (setf line (or (thing-at-point 'line) " "))
           (when (stringp line)
-               (setf line (replace-regexp-in-string "\n" " " line))
-               (setf line (pyong:put-star-in-string line (- pos (point-at-bol))))
-               (list (buffer-name (marker-buffer marker))
-                     (number-to-string (line-number-at-pos pos))
-                     line
-                     marker)
-               )))))
+            (setf line (replace-regexp-in-string "\n" " " line))
+            (setf line (pyong:put-star-in-string line (- pos (point-at-bol))))
+            (list (buffer-name (marker-buffer marker))
+                  (number-to-string (line-number-at-pos pos))
+                  line
+                  marker)
+            )))))
 
 
 (defun pyong:put-star-in-string (string pos)
