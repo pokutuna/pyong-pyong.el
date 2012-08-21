@@ -1,6 +1,16 @@
 ;;; pyong-pyong.el
-
 ;;
+
+(defun pyong:default-binding ()
+  (global-set-key (kbd "C-.") 'pyong:push-point-marker)
+  (global-set-key (kbd "C-,") 'pyong:pop-point-marker))
+
+(defvar pyong:marker-star-face 'anything-M-x-key-face)
+(defvar pyong:buffer-name-face 'font-lock-constant-face)
+(defvar pyong:line-number-face 'font-lock-comment-delimiter-face)
+
+(defvar pyong:candidate-number-limit 30)
+
 
 (defvar pyong:marker-stack ())
 (defvar pyong:marker-cache ())
@@ -9,17 +19,12 @@
 (defvar pyong:max-buffer-name-length 0)
 (defvar pyong:max-line-number-length 0)
 
-(defvar pyong:marker-star-face 'anything-M-x-key-face)
-(defvar pyong:buffer-name-face 'font-lock-constant-face)
-(defvar pyong:line-number-face 'font-lock-comment-delimiter-face)
-
-(defvar pyong:candidate-number-limit 30)
 
 (defun pyong:push-point-marker ()
   (interactive)
   (push (point-marker) pyong:marker-cache)
   (push (point-marker) pyong:marker-stack)
-  (message "[pyong] current position pushed."))
+  (message "[pyong] current position pushed"))
 
 
 (defun pyong:pop-point-marker ()
@@ -32,7 +37,7 @@
 
 (defvar anything-c-source-pyong-last-jumped
   '((name . "Pyong Last Jumped Position")
-    (cons candidates (list pyong:marker-cache))
+    (candidates . (lambda () (list pyong:last-pyonged-marker)))
     (type . pyong-marker)))
 
 
@@ -49,7 +54,8 @@
             ("jump and delete" . (lambda (marker)
                                    (pyong:goto-marker marker)
                                    (delete marker pyong:marker-cache)))
-            ("delete"  . (lambda (marker) (delete marker pyong:marker-cache)))))
+            ("delete"  . (lambda (marker) (delete marker pyong:marker-cache))))
+    (volatile))
   "marker for pyong-pyong.el")
 
 
@@ -71,18 +77,18 @@
 
 (defun pyong:marker-to-display-info (marker)
   (with-current-buffer (marker-buffer marker)
-      (save-excursion
-        (letf ((pos (marker-position marker)) (line))
-          (goto-char pos)
-          (setf line (or (thing-at-point 'line) " "))
-          (when (stringp line)
-            (setf line (replace-regexp-in-string "\n" " " line))
-            (setf line (pyong:put-star-in-string line (- pos (point-at-bol))))
-            (list (buffer-name (marker-buffer marker))
-                  (number-to-string (line-number-at-pos pos))
-                  line
-                  marker)
-            )))))
+    (save-excursion
+      (letf ((pos (marker-position marker)) (line))
+        (goto-char pos)
+        (setf line (or (thing-at-point 'line) " "))
+        (when (stringp line)
+          (setf line (replace-regexp-in-string "\n" " " line))
+          (setf line (pyong:put-star-in-string line (- pos (point-at-bol))))
+          (list (buffer-name (marker-buffer marker))
+                (number-to-string (line-number-at-pos pos))
+                line
+                marker)
+          )))))
 
 
 (defun pyong:put-star-in-string (string pos)
@@ -117,11 +123,4 @@
             (propertize (nth 1 l) 'face pyong:line-number-face)
             (nth 2 l))))
 
-
-(defun pyong:default-binding ()
-  (global-set-key (kbd "C-.") 'pyong:push-point-marker)
-  (global-set-key (kbd "C-,") 'pyong:pop-point-marker)
-  )
-
 (provide 'marker-jump)
-(pyong:default-binding)
