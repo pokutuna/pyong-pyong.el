@@ -1,0 +1,30 @@
+
+goto-chg.el参考になりそう
+
+buffer-undo-list に色々変更点溜まってる
+  http://www.geocities.co.jp/SiliconValley-Bay/9285/ELISP-JA/elisp_495.html
+  nilが境界
+
+overlayでできるかためす
+
+
+飛びたい場所・種類
+入れた場所            => pushしたとこ
+変更したところ        => buffer-undo-list
+たくさん移動したところ => post-command-hookでとる => たいへんそう
+                     point-undoはどうやってるんだろ
+                       pre-command-hook でカーソル位置を buffer localなlist にためていってる
+
+
+
+
+
+
+
+hogehoge
+
+
+fugafuga
+
+
+hogehoge
